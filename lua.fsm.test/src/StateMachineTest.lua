@@ -246,6 +246,26 @@ function StateMachineTest:TestTrigger_TestIf_WhereGuardFailure()
 	end)
 end
 
+function StateMachineTest:TestTrigger_TestIf_WhereGuardFailureAndGuardSuccess()
+	local stateMachine = StateMachine.New()
+
+	local stateMachine = StateMachine.New()
+
+	stateMachine:In(State.STATE_O)
+		:On(Event.EVENT_A):If(GUARD_FAILURE):Go(State.STATE_A)
+		:On(Event.EVENT_A):If(GUARD_SUCCESS):Go(State.STATE_X)
+
+	stateMachine:In(State.STATE_A)
+
+	stateMachine:In(State.STATE_X)
+
+	stateMachine:Start(State.STATE_O)
+
+	stateMachine:Trigger(Event.EVENT_A)
+
+	LuaUnit.assertEquals(stateMachine:GetCurrent(), State.STATE_X)
+end
+
 function StateMachineTest:TestTrigger_TestOf()
 	local stateMachine = StateMachine.New()
 

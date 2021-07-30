@@ -244,7 +244,7 @@ function On.New(fsm, fsmEvent, _in)
 end
 
 function On:If(guard)
-	return If.New(self._fsm, self._fsmEvent:AddGuard(guard, self._in, self))
+	return If.New(self._fsm, self._fsmEvent:AddGuard(guard), self._in, self)
 end
 
 function On:Go(state)
