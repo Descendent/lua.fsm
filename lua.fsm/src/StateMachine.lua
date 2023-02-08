@@ -1,10 +1,10 @@
 local ERROR = {}
 
-local EMPTY_GUARD = function ()
+local EMPTY_GUARD = function (value)
 	return true
 end
 
-local EMPTY_LOGIC = function ()
+local EMPTY_LOGIC = function (value)
 end
 
 --------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ function FsmGuard:SetBinding(binding)
 end
 
 function FsmGuard:Trigger(value)
-	if not self._guard() then
+	if not self._guard(value) then
 		return false
 	end
 

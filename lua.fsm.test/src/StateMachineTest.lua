@@ -34,11 +34,11 @@ local Event = {
 	EVENT_ZZZ = "ZZZ"
 }
 
-local GUARD_SUCCESS = function ()
+local GUARD_SUCCESS = function (value)
 	return true
 end
 
-local GUARD_FAILURE = function ()
+local GUARD_FAILURE = function (value)
 	return false
 end
 
@@ -264,6 +264,21 @@ function StateMachineTest:TestTrigger_TestIf_WhereGuardFailureAndGuardSuccess()
 	stateMachine:Trigger(Event.EVENT_A)
 
 	LuaUnit.assertEquals(stateMachine:GetCurrent(), State.STATE_X)
+end
+
+function StateMachineTest:TestTrigger_TestIf_WithValue()
+	local stateMachine = StateMachine.New()
+
+	stateMachine:In(State.STATE_O)
+		:On(Event.EVENT_A):If(function (value) return value end):Go(State.STATE_A)
+
+	stateMachine:In(State.STATE_A)
+
+	stateMachine:Start(State.STATE_O)
+
+	stateMachine:Trigger(Event.EVENT_A, true)
+
+	LuaUnit.assertEquals(stateMachine:GetCurrent(), State.STATE_A)
 end
 
 function StateMachineTest:TestTrigger_TestOf()
