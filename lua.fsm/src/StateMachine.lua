@@ -1,3 +1,31 @@
+local function Quote(value)
+	local t = type(value)
+
+	if t == "string" then
+		return string.format("%q", value)
+	end
+
+	if t == "table" then
+		return string.format("[%s]", value)
+	end
+
+	if t == "function" then
+		return string.format("[%s]", value)
+	end
+
+	if t == "thread" then
+		return string.format("[%s]", value)
+	end
+
+	if t == "userdata" then
+		return string.format("[%s]", value)
+	end
+
+	return value
+end
+
+--------------------------------------------------------------------------------
+
 local ERROR = {}
 
 local EMPTY_GUARD = function (value)
@@ -465,7 +493,8 @@ function Fsm:SetCurrent(state)
 	local a = self._fsmState[self._current]
 	local b = self._fsmState[state]
 
-	assert(b ~= nil)
+	assert(b ~= nil,
+		string.format("invalid argument: state=%s", Quote(state)))
 
 	if a == b then
 		SetCurrent_Reenter(self, state, a)
@@ -497,7 +526,7 @@ local function Process_Outcome(self, trigger)
 	end
 
 	if not success then
-		error(string.format("%s:%s", tostring(self._current), tostring(trigger.event)))
+		error(string.format("invalid operation: state=%s, event=%s, value=%s", Quote(self._current), Quote(trigger.event), Quote(trigger.value)))
 	end
 end
 
